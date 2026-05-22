@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>System Security Alert</title>
+
+<style>
+  body {
+    margin: 0;
+    background: black;
+    color: red;
+    font-family: monospace;
+    overflow: hidden;
+  }
+
+  #screen {
+    padding: 20px;
+    font-size: 18px;
+    white-space: pre-wrap;
+  }
+
+  #count {
+    font-size: 70px;
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    background: red;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+</style>
+</head>
+
+<body>
+
+<div id="screen"></div>
+<div id="count"></div>
+
+<audio id="alarm" src="https://www.soundjay.com/misc/sounds/fail-buzzer-01.mp3"></audio>
+
+<script>
+
+let lines = [
+  "⚠️ SYSTEM SECURITY ALERT ⚠️",
+  "Unknown device connected...",
+  "Accessing personal data...",
+  "Photos copied...",
+  "Contacts uploaded...",
+  "Location tracked...",
+  "⚠️ YOUR DEVICE HAS BEEN HACKED ⚠️",
+  "System shutdown started..."
+];
+
+let screen = document.getElementById("screen");
+let alarm = document.getElementById("alarm");
+
+// Typing effect (letter by letter)
+function typeLine(text, callback) {
+  let i = 0;
+  let line = document.createElement("div");
+  screen.appendChild(line);
+
+  function typing() {
+    if (i < text.length) {
+      line.innerHTML += text.charAt(i);
+      alarm.currentTime = 0;
+      alarm.play().catch(()=>{});
+      i++;
+      setTimeout(typing, 40); // typing speed
+    } else {
+      line.innerHTML += "\n";
+      setTimeout(callback, 500);
+    }
+  }
+
+  typing();
+}
+
+// Loop through lines
+function startTyping(index) {
+  if (index < lines.length) {
+    typeLine(lines[index], () => startTyping(index + 1));
+  } else {
+    startCountdown();
+  }
+}
+
+// Countdown
+function startCountdown() {
+  let c = 5;
+  let countDiv = document.getElementById("count");
+
+  let timer = setInterval(() => {
+    countDiv.innerHTML = c;
+    alarm.play().catch(()=>{});
+    c--;
+
+    if (c < 0) {
+      clearInterval(timer);
+
+      // blackout
+      document.body.innerHTML = "";
+      document.body.style.background = "black";
+
+      setTimeout(() => {
+        document.body.innerHTML =
+        "<h1 style='color:lime;text-align:center;margin-top:200px;'>📞 Contact me at this number: 9958258724</h1>";
+      }, 2000);
+    }
+
+  }, 1000);
+}
+
+// Start
+startTyping(0);
+
+</script>
+
+</body>
+</html>
