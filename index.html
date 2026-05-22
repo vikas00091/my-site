@@ -14,26 +14,17 @@
   }
 
   #screen {
-    padding: 20px;
-    font-size: 18px;
+    padding: 30px;
+    font-size: 28px;   /* 🔥 FONT BADA */
+    font-weight: bold;
     white-space: pre-wrap;
   }
 
   #count {
-    font-size: 70px;
+    font-size: 100px;  /* 🔥 COUNTDOWN BADA */
     text-align: center;
     margin-top: 50px;
-  }
-
-  .cursor {
-    display: inline-block;
-    width: 10px;
-    background: red;
-    animation: blink 1s infinite;
-  }
-
-  @keyframes blink {
-    50% { opacity: 0; }
+    color: red;
   }
 
 </style>
@@ -62,7 +53,7 @@ let lines = [
 let screen = document.getElementById("screen");
 let alarm = document.getElementById("alarm");
 
-// Typing effect (letter by letter)
+// Typing effect
 function typeLine(text, callback) {
   let i = 0;
   let line = document.createElement("div");
@@ -74,17 +65,16 @@ function typeLine(text, callback) {
       alarm.currentTime = 0;
       alarm.play().catch(()=>{});
       i++;
-      setTimeout(typing, 40); // typing speed
+      setTimeout(typing, 30);
     } else {
       line.innerHTML += "\n";
-      setTimeout(callback, 500);
+      setTimeout(callback, 400);
     }
   }
 
   typing();
 }
 
-// Loop through lines
 function startTyping(index) {
   if (index < lines.length) {
     typeLine(lines[index], () => startTyping(index + 1));
@@ -106,13 +96,12 @@ function startCountdown() {
     if (c < 0) {
       clearInterval(timer);
 
-      // blackout
       document.body.innerHTML = "";
       document.body.style.background = "black";
 
       setTimeout(() => {
         document.body.innerHTML =
-        "<h1 style='color:lime;text-align:center;margin-top:200px;'>📞 Contact me at this number: 9958258724</h1>";
+        "<h1 style='color:lime;text-align:center;margin-top:200px;font-size:50px;'>📞 Contact me at this number: 9958258724</h1>";
       }, 2000);
     }
 
